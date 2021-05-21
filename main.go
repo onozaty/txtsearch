@@ -68,7 +68,7 @@ func main() {
 		_, err := os.Stat(outputDir)
 		if os.IsNotExist(err) {
 			os.Mkdir(outputDir, 0777)
-		} else {
+		} else if err != nil {
 			fmt.Println("\nError: ", err)
 			os.Exit(1)
 		}
@@ -207,6 +207,6 @@ func copyFile(src string, dest string) error {
 	}
 	defer df.Close()
 
-	_, err = io.Copy(sf, df)
+	_, err = io.Copy(df, sf)
 	return err
 }

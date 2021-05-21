@@ -252,6 +252,12 @@ func TestConvert_copyFiles(t *testing.T) {
 	if len(fileInfos) != 2 {
 		t.Fatal("failed test\n", fileInfos)
 	}
+	for _, fileInfo := range fileInfos {
+		if fileInfo.Size() == 0 {
+			// 空じゃないことだけチェック
+			t.Fatal("failed test\n", fileInfo)
+		}
+	}
 }
 
 func createTempFile(content string) (*os.File, error) {
