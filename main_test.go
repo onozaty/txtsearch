@@ -5,6 +5,7 @@ import (
 	"os"
 	"path/filepath"
 	"reflect"
+	"strings"
 	"testing"
 )
 
@@ -136,6 +137,27 @@ word4
 	}
 
 	if result {
+		t.Fatal("failed test\n", result)
+	}
+}
+
+func TestConvert_match_looongtext(t *testing.T) {
+
+	// bufio.Scanner だと token too long が出るくらいの長さで
+	s := strings.Repeat("x", 100000) + "word1"
+
+	f, err := createTempFile(s)
+	if err != nil {
+		t.Fatal("failed test\n", err)
+	}
+	defer os.Remove(f.Name())
+
+	result, err := match(f.Name(), []string{"word1"}, false)
+	if err != nil {
+		t.Fatal("failed test\n", err)
+	}
+
+	if !result {
 		t.Fatal("failed test\n", result)
 	}
 }

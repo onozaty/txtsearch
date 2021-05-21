@@ -60,12 +60,11 @@ func main() {
 		os.Exit(1)
 	}
 
-	fmt.Printf("total: %d, match: %d\n", result.totalCount, len(result.matchFiles))
+	fmt.Printf("total: %d  match: %d\n", result.totalCount, len(result.matchFiles))
 
 	if outputDir != "" {
 		// 出力ディレクトリが指定されていた場合
 		// -> 一致したファイルを出力
-
 		_, err := os.Stat(outputDir)
 		if os.IsNotExist(err) {
 			os.Mkdir(outputDir, 0777)
@@ -137,11 +136,19 @@ func match(path string, words []string, caseSensitive bool) (bool, error) {
 	}
 	defer f.Close()
 
-	scanner := bufio.NewScanner(f)
+	r := bufio.NewReader(f)
 
-	for scanner.Scan() {
+	eof := false
+	for !eof {
 
-		line := scanner.Text()
+		line, err := r.ReadString('n')
+		if err == io.EOF {
+			// EOFの場合でも末尾までの文字が返ってくるのでフラグ立ててそのまま継続
+			eof = true
+		} else if err != nil {
+			return false, err
+		}
+
 		if !caseSensitive {
 			line = strings.ToLower(line)
 		}
@@ -151,11 +158,6 @@ func match(path string, words []string, caseSensitive bool) (bool, error) {
 				return true, nil
 			}
 		}
-	}
-
-	err = scanner.Err()
-	if err != nil {
-		return false, err
 	}
 
 	return false, nil
