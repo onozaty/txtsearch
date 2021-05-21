@@ -30,8 +30,8 @@ func main() {
 	var caseSensitive bool
 
 	flag.StringVarP(&inputDir, "input", "i", "", "Input directory. Specify the directory where the text files to be searched are located.")
-	flag.StringVarP(&outputDir, "output", "o", "", "Output directory. The text files that match the search will be placed.")
-	flag.BoolVarP(&caseSensitive, "cs", "c", false, "The search is case-sensitive. By default, it is not case-sensitive.")
+	flag.StringVarP(&outputDir, "output", "o", "", "(optional) The directory to output text files matched by the search.")
+	flag.BoolVarP(&caseSensitive, "cs", "c", false, "(optional) The search is case-sensitive. By default, it is not case-sensitive.")
 	flag.BoolVarP(&help, "help", "h", false, "Help.")
 	flag.Parse()
 	flag.CommandLine.SortFlags = false
