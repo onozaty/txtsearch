@@ -14,15 +14,11 @@ import (
 )
 
 var (
-	version = "dev"
-	commit  = "none"
+	Version = "dev"
+	Commit  = "none"
 )
 
 func main() {
-
-	if len(commit) > 7 {
-		commit = commit[:7]
-	}
 
 	var help bool
 	var inputDir string
@@ -36,7 +32,7 @@ func main() {
 	flag.Parse()
 	flag.CommandLine.SortFlags = false
 	flag.Usage = func() {
-		fmt.Printf("txtsearch v%s (%s)\n", version, commit)
+		fmt.Printf("txtsearch v%s (%s)\n", Version, Commit)
 		fmt.Fprintf(os.Stderr, "Usage: %s [flags] WORDS...\nflags\n", os.Args[0])
 		flag.PrintDefaults()
 	}
